@@ -56,6 +56,7 @@ export const Home = () => {
               name={item.name}
               created_at={item.created_at}
               key={item.id}
+              import_status={item.import_status}
             />
           ))}
         </div>
