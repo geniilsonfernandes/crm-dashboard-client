@@ -1,10 +1,32 @@
-import React, { useMemo, useState } from "react";
-import Card from "./Card";
 import { ApexOptions } from "apexcharts";
+import { ChevronLeft, ChevronRight, Loader } from "lucide-react";
+import { useMemo, useState } from "react";
 import Chart from "react-apexcharts";
-import { ChevronLeft, ChevronRight } from "lucide-react";
-import { cn } from "../pages/utils";
+import { cn, formatCurrencyToBRL } from "../pages/utils";
+import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
+import Card from "./Card";
+
 const MRRChart = () => {
+  const [yearRange, setYearRange] = useState(2022);
+  const [selectYear, setSelectYear] = useState(2022);
+
+  const getMRR = async (import_id: string, year: number) => {
+    const { data } = await axios.get("http://localhost:4000/analytics/mrr", {
+      params: {
+        import_id,
+        year,
+      },
+    });
+
+    return data;
+  };
+
+  const { data, isLoading, isFetching } = useQuery({
+    queryKey: [selectYear],
+    queryFn: () => getMRR("085281dc-80a1-405d-8ec1-a9ee651373e3", selectYear),
+  });
+
   const chartOptions: ApexOptions = {
     chart: {
       id: "monthly-sales-chart",
@@ -15,7 +37,7 @@ const MRRChart = () => {
         enabled: false,
       },
     },
-    colors: ["#6366F1", "#EF4444"],
+    colors: ["#0f172a", "#EF4444"],
     fill: {
       type: "gradient",
       gradient: {
@@ -31,6 +53,11 @@ const MRRChart = () => {
     },
     dataLabels: {
       enabled: true,
+      textAnchor: "middle",
+      formatter: (val) => formatCurrencyToBRL(Number(val)),
+      style: {
+        fontSize: "10px",
+      },
     },
     grid: {
       padding: {
@@ -41,14 +68,25 @@ const MRRChart = () => {
         lines: { show: false, offsetX: 0, offsetY: 0 },
       },
     },
-    yaxis: {
-      labels: {
-        style: {
-          colors: "#b9b9c3",
-          fontSize: "0.86rem",
+    yaxis: [
+      {
+        labels: {
+          show: false,
+          style: {
+            colors: "#b9b9c3",
+            fontSize: "0.86rem",
+          },
+          formatter: (val) => formatCurrencyToBRL(val),
         },
       },
-    },
+      {
+        labels: {
+          show: false,
+          formatter: (val) => val.toString(),
+        },
+        floating: true,
+      },
+    ],
     xaxis: {
       categories: [
         "Jan",
@@ -73,6 +111,7 @@ const MRRChart = () => {
           fontSize: "0.86rem",
         },
       },
+
       axisTicks: {
         show: false,
       },
@@ -82,16 +121,9 @@ const MRRChart = () => {
   const chartSeries = [
     {
       name: "MRR",
-      data: [400, 430, 448, 470, 540, 580, 690, 1100, 1200, 1380, 1540, 1600],
-    },
-    {
-      name: "CHURN",
-      data: [1100, 1200, 1380, 1540, 1600, 400, 30, 448, 470, 540, 580, 690],
+      data: data?.analytics?.mrr_month || [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     },
   ];
-
-  const [yearRange, setYearRange] = useState(2022);
-  const [selectYear, setSelectYear] = useState(2022);
 
   const handleYearChange = (year: number) => {
     setSelectYear(year);
@@ -117,8 +149,17 @@ const MRRChart = () => {
 
   return (
     <Card
+      className="col-span-8"
       title="Receita Recorrente Mensal (MRR)"
       footer="Válores de calculo: assinaturas ativas no mes e o tempo de assinatura"
+      headerRight={
+        isLoading || isFetching ? (
+          <div className="flex items-center gap-2 text-gray-200">
+            Carregando...
+            <Loader size={24} className="animate-spin" />
+          </div>
+        ) : null
+      }
     >
       <div className="flex justify-between mb-4">
         <div className="flex flex-1 justify-between">

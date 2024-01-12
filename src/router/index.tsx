@@ -6,6 +6,7 @@ import {
   createBrowserRouter,
 } from "react-router-dom";
 import { Home } from "../pages/Home";
+import { ImportPage } from "../pages/Import";
 
 const PublicLayout = () => {
   return (
@@ -23,6 +24,7 @@ function PublicRoute(): {
     element: <PublicLayout />,
     children: [
       { path: "/home", element: <Home /> },
+      { path: "/import/:id", element: <ImportPage /> },
       { path: "*", element: <Navigate to="/home" replace /> },
     ],
   };

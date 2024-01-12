@@ -34,14 +34,9 @@ const DonutChart = ({
         type="donut"
         width="200px"
         height="200px"
-        series={[20, 10]}
+        series={data}
         options={{
-          labels: [
-            "Assinatura 1",
-            "Assinatura 2",
-            "Assinatura 3",
-            "Assinatura 4",
-          ],
+          labels: labels,
           colors: ["#cecece", "#838383"],
           legend: {
             show: false,

@@ -2,11 +2,12 @@ import { icons } from "lucide-react";
 import { cn } from "../pages/utils";
 import Card from "./Card";
 
-type AvaregeCardProps = {
+export type AvaregeCardProps = {
   title: string;
   value?: string | number;
   helprText: string;
   color: "warning" | "success" | "danger";
+  isLoading?: boolean;
   icon?: keyof typeof icons;
 };
 export const AvaregeCard = ({
@@ -15,6 +16,7 @@ export const AvaregeCard = ({
   helprText,
   color,
   icon = "User",
+  isLoading,
 }: AvaregeCardProps) => {
   const LucideIcon = icons[icon];
   const getColor = (color: "warning" | "success" | "danger") => {
@@ -31,7 +33,7 @@ export const AvaregeCard = ({
   };
 
   return (
-    <Card title={title} footer={helprText}>
+    <Card title={title} footer={helprText} isLoading={isLoading}>
       <div className="my-4 flex justify-between items-center">
         <h1
           className={cn("text-3xl font-bold text-slate-500", getColor(color))}
