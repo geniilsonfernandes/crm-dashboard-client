@@ -1,25 +1,25 @@
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
 import dayjs from "dayjs";
 import { Calendar, ChevronLeft } from "lucide-react";
+import { useMemo } from "react";
+import { useParams } from "react-router-dom";
 import { AvaregeCard, AvaregeCardProps } from "../../Components/AvaregeCard";
 import Card from "../../Components/Card";
 import DonutChart from "../../Components/DonutChart";
 import MRRChart from "../../Components/MRRChart";
 import { IAnalyticsDTO } from "../../http/analytics/analyticsDTO";
+import api from "../../http/api";
 import { formatCurrencyToBRL, formatToPercentage } from "../utils";
-import { useMemo } from "react";
-import { useParams } from "react-router-dom";
 
 export const ImportPage = () => {
   const { id } = useParams() as {
     id: string;
   };
   const { data, isLoading } = useQuery<IAnalyticsDTO>({
-    queryKey: ["analytics,1"],
+    queryKey: ["analytics"],
     queryFn: () =>
-      axios
-        .get<IAnalyticsDTO>("http://localhost:4000/analytics", {
+      api
+        .get<IAnalyticsDTO>("/analytics", {
           params: {
             import_id: id,
           },
@@ -36,7 +36,7 @@ export const ImportPage = () => {
     const churn_rate_by_plan_labels = Object.keys(churn_rate_by_plan || {});
     const churn_rate_by_plan_data = Object.values(churn_rate_by_plan || {});
 
-    const m = churn_rate_by_plan_data.reduce(
+    const must_plan_rated = churn_rate_by_plan_data.reduce(
       (acc, curr, i) => {
         if (acc.amount < curr) {
           acc.amount = curr;
@@ -50,7 +50,6 @@ export const ImportPage = () => {
         planIndex: 0,
       }
     );
-    console.log(m);
 
     return {
       active_customers: {
@@ -61,7 +60,8 @@ export const ImportPage = () => {
       churn_rate: {
         labels: churn_rate_by_plan_labels || [],
         data: churn_rate_by_plan_data || [],
-        must_rate_plan: churn_rate_by_plan_labels[m.planIndex] || "Nenhum",
+        must_rate_plan:
+          churn_rate_by_plan_labels[must_plan_rated.planIndex] || "Nenhum",
       },
     };
   }, [data]);

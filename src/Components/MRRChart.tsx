@@ -1,10 +1,10 @@
+import { useQuery } from "@tanstack/react-query";
 import { ApexOptions } from "apexcharts";
 import { ChevronLeft, ChevronRight, Loader } from "lucide-react";
 import { useMemo, useState } from "react";
 import Chart from "react-apexcharts";
+import api from "../http/api";
 import { cn, formatCurrencyToBRL } from "../pages/utils";
-import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
 import Card from "./Card";
 
 const MRRChart = () => {
@@ -12,7 +12,7 @@ const MRRChart = () => {
   const [selectYear, setSelectYear] = useState(2022);
 
   const getMRR = async (import_id: string, year: number) => {
-    const { data } = await axios.get("http://localhost:4000/analytics/mrr", {
+    const { data } = await api.get("analytics/mrr", {
       params: {
         import_id,
         year,
