@@ -56,7 +56,14 @@ const MRRChart = ({ import_id }: MRRChartProps) => {
     dataLabels: {
       enabled: true,
       textAnchor: "middle",
-      formatter: (val) => formatCurrencyToBRL(Number(val)),
+      formatter: function (val, { seriesIndex, w }) {
+        // Verifica o nome da série e formata conforme necessário
+        if (w.config.series[seriesIndex].name === "MRR") {
+          return formatCurrencyToBRL(Number(val));
+        } else {
+          return val.toString(); // Formata o Churn como número inteiro
+        }
+      },
       style: {
         fontSize: "10px",
       },
@@ -124,6 +131,12 @@ const MRRChart = ({ import_id }: MRRChartProps) => {
     {
       name: "MRR",
       data: data?.analytics?.mrr_month || [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    },
+    {
+      name: "Churn",
+      data: data?.analytics?.chrunRatePerMonth || [
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+      ],
     },
   ];
 

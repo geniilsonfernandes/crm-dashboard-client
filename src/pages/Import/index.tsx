@@ -133,7 +133,7 @@ export const ImportPage = () => {
           </div>
         </div>
         <div className="space-y-8">
-          <div className="grid grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 gap-8  sm:grid-cols-4 ">
             {analytics.map((item) => (
               <AvaregeCard
                 isLoading={isLoading}
@@ -146,7 +146,7 @@ export const ImportPage = () => {
               />
             ))}
           </div>
-          <div className="grid grid-cols-12 gap-8">
+          <div className="grid grid-cols-1 gap-8 md:grid-flow-col-6 sm:grid-cols-12">
             <MRRChart import_id={id} />
 
             <Card
