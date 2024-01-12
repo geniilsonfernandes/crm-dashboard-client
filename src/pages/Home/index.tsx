@@ -1,8 +1,10 @@
-import { Calendar, ChevronLeft } from "lucide-react";
+import { Activity, Calendar, ChevronLeft } from "lucide-react";
 import { AvaregeCard } from "../../Components/AvaregeCard";
-import { formatCurrencyToBRL, formatToPercentage } from "../utils";
 import Card from "../../Components/Card";
-
+import { formatCurrencyToBRL, formatToPercentage } from "../utils";
+import MRRChart from "../../Components/MRRChart";
+import Chart from "react-apexcharts";
+import DonutChart from "../../Components/DonutChart";
 export const Home = () => {
   const analytics = [
     { name: "Clientes Ativos", value: 597 },
@@ -14,8 +16,9 @@ export const Home = () => {
       value: formatCurrencyToBRL(1266.8),
     },
   ];
+
   return (
-    <div className="bg-slate-200 h-screen">
+    <div className="bg-slate-200  ">
       <div className="bg-slate-900 h-[300px]">
         <div className="container pt-6">
           <button className=" p-2 rounded flex light:text-slate-400 dark:text-slate-100 items-center hover:text-slate-400 hover:bg-slate-800 ">
@@ -24,7 +27,7 @@ export const Home = () => {
           </button>
         </div>
       </div>
-      <div className="container pt-8 -mt-44">
+      <div className="container pt-8 -mt-44 pb-8">
         <div className="flex justify-between mb-4">
           <h1 className="text-3xl font-bold light:text-slate-400 dark:text-slate-100 mb-8">
             Análise de Churn
@@ -50,12 +53,25 @@ export const Home = () => {
               />
             ))}
           </div>
-          <div className="grid grid-cols-2 gap-8">
-            <Card title="card 1" footer="footer">
-              oi
-            </Card>
-            <Card title="card 1" footer="footer">
-              oi
+          <div className="grid grid-cols-12 gap-8">
+            <div className="col-span-8">
+              <MRRChart />
+            </div>
+
+            <Card title="Assinaturas" className="col-span-4">
+              <div className="">
+                <DonutChart
+                  title="Tipos de Assinatura"
+                  subtitle="Total de assinaturas ativas:"
+                  value="10.000"
+                />
+                <hr className="my-8" />
+                <DonutChart
+                  title="Churn rate por assinatura"
+                  subtitle="Assinatura com maior churn rate"
+                  value="Mensal"
+                />
+              </div>
             </Card>
           </div>
         </div>
