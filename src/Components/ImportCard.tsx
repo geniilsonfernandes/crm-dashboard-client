@@ -1,6 +1,5 @@
 import dayjs from "dayjs";
 import { ChevronRight } from "lucide-react";
-import React from "react";
 import { useNavigate } from "react-router-dom";
 
 type ImportCardProps = {
