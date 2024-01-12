@@ -158,17 +158,17 @@ export const ImportPage = () => {
                 <DonutChart
                   title="Tipos de Assinatura"
                   subtitle="Total de assinaturas ativas:"
-                  value={data?.analytics.active_customers.toString() || "0"}
-                  data={subscriptions.active_customers.data}
-                  labels={subscriptions.active_customers.labels}
+                  value={data?.analytics?.active_customers.toString() || "0"}
+                  data={subscriptions?.active_customers?.data}
+                  labels={subscriptions?.active_customers?.labels}
                 />
                 <hr className="my-8" />
                 <DonutChart
                   title="Churn rate por assinatura"
                   subtitle="Assinatura com maior churn rate"
-                  value={subscriptions.churn_rate.must_rate_plan}
-                  data={subscriptions.churn_rate.data}
-                  labels={subscriptions.churn_rate.labels}
+                  value={subscriptions?.churn_rate?.must_rate_plan}
+                  data={subscriptions?.churn_rate?.data}
+                  labels={subscriptions?.churn_rate?.labels}
                 />
               </div>
             </Card>
