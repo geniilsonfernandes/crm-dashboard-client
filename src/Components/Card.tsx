@@ -2,7 +2,7 @@ import { cn } from "../pages/utils";
 
 type CardProps = {
   title?: string;
-  children: React.ReactNode;
+  children?: React.ReactNode;
   headerRight?: React.ReactNode;
   footer?: string;
   className?: string;

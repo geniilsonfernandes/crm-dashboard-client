@@ -1,24 +1,61 @@
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
-import { IAnalyticsDTO } from "../../http/analytics/analyticsDTO";
+import { File, Upload } from "lucide-react";
+import { useState } from "react";
+import Card from "../../Components/Card";
+import ImportCard from "../../Components/ImportCard";
+import ModalImport from "../../Components/ModalImport";
+import api from "../../http/api";
+import { IImportDTO } from "../../http/imports/importsDTO";
 
 export const Home = () => {
-  const { data, isLoading } = useQuery<IAnalyticsDTO>({
-    queryKey: ["analytics,1"],
-    queryFn: () =>
-      axios
-        .get<IAnalyticsDTO>("http://localhost:4000/analytics", {
-          params: {
-            import_id: "085281dc-80a1-405d-8ec1-a9ee651373e3",
-          },
-        })
-        .then((res) => res.data),
+  const [isVisible, setIsVisible] = useState(false);
+
+  const { data, isLoading } = useQuery({
+    queryKey: ["imports"],
+    queryFn: () => api.get<IImportDTO>("imports").then((res) => res.data),
   });
 
   return (
-    <div className="bg-slate-200  ">
-      <div className="bg-slate-900 h-[300px]"></div>
-      <div className="container pt-8 -mt-44 pb-8"></div>
+    <div className="bg-slate-200  min-h-screen">
+      <ModalImport isVisible={isVisible} onClose={() => setIsVisible(false)} />
+      <div className="bg-slate-900 h-[300px]">
+        <div className="container py-8 flex justify-between flex-col h-full">
+          <h1 className="text-2xl font-bold text-slate-300">
+            Importações de CRM
+          </h1>
+
+          <div className=" flex items-center rounded-lg  justify-between">
+            <p className="text-slate-200">Importar CRM</p>
+            <div className="flex gap-4">
+              <button className="cursor-pointer text-slate-200 border border-slate-800 p-4 rounded-md flex items-center gap-3">
+                Baixar Template <File strokeWidth={1} />
+              </button>
+              <button
+                className="bg-indigo-500 cursor-pointer text-slate-200 border border-slate-800 p-4 rounded-md flex items-center gap-3"
+                onClick={() => setIsVisible(true)}
+              >
+                Enviar planilha <Upload strokeWidth={1} />
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className="container pt-8 pb-8 " onClick={() => setIsVisible(false)}>
+        <div className="grid grid-cols-1 gap-4">
+          {isLoading &&
+            Array.from({ length: 4 }).map((_, i) => (
+              <Card key={i} isLoading className="h-[80px]"></Card>
+            ))}
+          {data?.data?.map((item) => (
+            <ImportCard
+              id={item.id}
+              name={item.name}
+              created_at={item.created_at}
+              key={item.id}
+            />
+          ))}
+        </div>
+      </div>
     </div>
   );
 };

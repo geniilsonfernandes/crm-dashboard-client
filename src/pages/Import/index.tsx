@@ -9,23 +9,27 @@ import MRRChart from "../../Components/MRRChart";
 import { IAnalyticsDTO } from "../../http/analytics/analyticsDTO";
 import { formatCurrencyToBRL, formatToPercentage } from "../utils";
 import { useMemo } from "react";
+import { useParams } from "react-router-dom";
 
 export const ImportPage = () => {
+  const { id } = useParams() as {
+    id: string;
+  };
   const { data, isLoading } = useQuery<IAnalyticsDTO>({
     queryKey: ["analytics,1"],
     queryFn: () =>
       axios
         .get<IAnalyticsDTO>("http://localhost:4000/analytics", {
           params: {
-            import_id: "085281dc-80a1-405d-8ec1-a9ee651373e3",
+            import_id: id,
           },
         })
         .then((res) => res.data),
   });
 
   const subscriptions = useMemo(() => {
-    const active_customers = data?.analytics.active_customers_by_plan;
-    const churn_rate_by_plan = data?.analytics.churn_rate_by_plan;
+    const active_customers = data?.analytics?.active_customers_by_plan;
+    const churn_rate_by_plan = data?.analytics?.churn_rate_by_plan;
     const plans_customers_labels = Object.keys(active_customers || {});
     const plans_customers_data = Object.values(active_customers || {});
 
@@ -52,7 +56,7 @@ export const ImportPage = () => {
       active_customers: {
         labels: plans_customers_labels || [],
         data: plans_customers_data || [],
-        total: data?.analytics.active_customers || 0,
+        total: data?.analytics?.active_customers || 0,
       },
       churn_rate: {
         labels: churn_rate_by_plan_labels || [],
