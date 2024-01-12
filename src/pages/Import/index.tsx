@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import { Calendar, ChevronLeft } from "lucide-react";
 import { useMemo } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { AvaregeCard, AvaregeCardProps } from "../../Components/AvaregeCard";
 import Card from "../../Components/Card";
 import DonutChart from "../../Components/DonutChart";
@@ -12,6 +12,7 @@ import api from "../../http/api";
 import { formatCurrencyToBRL, formatToPercentage } from "../utils";
 
 export const ImportPage = () => {
+  const navegate = useNavigate();
   const { id } = useParams() as {
     id: string;
   };
@@ -105,7 +106,10 @@ export const ImportPage = () => {
     <div className="bg-slate-200  ">
       <div className="bg-slate-900 h-[300px]">
         <div className="container pt-6">
-          <button className=" p-2 rounded flex light:text-slate-400 dark:text-slate-100 items-center hover:text-slate-400 hover:bg-slate-800 ">
+          <button
+            className=" p-2 rounded flex light:text-slate-400 dark:text-slate-100 items-center hover:text-slate-400 hover:bg-slate-800 "
+            onClick={() => navegate("/")}
+          >
             <ChevronLeft className="text-slate-400" size={32} /> voltar para
             importações
           </button>
@@ -143,7 +147,7 @@ export const ImportPage = () => {
             ))}
           </div>
           <div className="grid grid-cols-12 gap-8">
-            <MRRChart />
+            <MRRChart import_id={id} />
 
             <Card
               title="Assinaturas"

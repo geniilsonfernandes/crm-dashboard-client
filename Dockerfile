@@ -1,5 +1,5 @@
 # Etapa de construção
-FROM node:16 as builder
+FROM node:18 as builder
 
 WORKDIR /app
 
@@ -20,8 +20,8 @@ COPY --from=builder /app/dist /usr/share/nginx/html
 # Configuração do Nginx para lidar com as rotas do React
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 
-# Expõe a porta 80
-EXPOSE 80
+# Expõe a porta 8080 (alterada da porta 80)
+EXPOSE 8080
 
 # Comando para iniciar o servidor Nginx
 CMD ["nginx", "-g", "daemon off;"]

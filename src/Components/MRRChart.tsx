@@ -6,8 +6,10 @@ import Chart from "react-apexcharts";
 import api from "../http/api";
 import { cn, formatCurrencyToBRL } from "../pages/utils";
 import Card from "./Card";
-
-const MRRChart = () => {
+type MRRChartProps = {
+  import_id: string;
+};
+const MRRChart = ({ import_id }: MRRChartProps) => {
   const [yearRange, setYearRange] = useState(2022);
   const [selectYear, setSelectYear] = useState(2022);
 
@@ -24,7 +26,7 @@ const MRRChart = () => {
 
   const { data, isLoading, isFetching } = useQuery({
     queryKey: [selectYear],
-    queryFn: () => getMRR("085281dc-80a1-405d-8ec1-a9ee651373e3", selectYear),
+    queryFn: () => getMRR(import_id, selectYear),
   });
 
   const chartOptions: ApexOptions = {

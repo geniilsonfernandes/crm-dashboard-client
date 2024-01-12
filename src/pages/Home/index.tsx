@@ -10,14 +10,18 @@ import { IImportDTO } from "../../http/imports/importsDTO";
 export const Home = () => {
   const [isVisible, setIsVisible] = useState(false);
 
-  const { data, isLoading } = useQuery({
+  const { data, isLoading, refetch } = useQuery({
     queryKey: ["imports"],
     queryFn: () => api.get<IImportDTO>("imports").then((res) => res.data),
   });
 
   return (
     <div className="bg-slate-200  min-h-screen">
-      <ModalImport isVisible={isVisible} onClose={() => setIsVisible(false)} />
+      <ModalImport
+        isVisible={isVisible}
+        onClose={() => setIsVisible(false)}
+        refetchImports={refetch}
+      />
       <div className="bg-slate-900 h-[300px]">
         <div className="container py-8 flex justify-between flex-col h-full">
           <h1 className="text-2xl font-bold text-slate-300">

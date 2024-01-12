@@ -1,11 +1,16 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { cn } from "../pages/utils";
 import useImport from "../hooks/useImport";
 type ModalImportProps = {
   isVisible: boolean;
   onClose: () => void;
+  refetchImports?: () => void;
 };
-const ModalImport = ({ isVisible, onClose }: ModalImportProps) => {
+const ModalImport = ({
+  isVisible,
+  onClose,
+  refetchImports,
+}: ModalImportProps) => {
   const { execute, isError, isLoading, isSuccess, clear } = useImport();
 
   const [fileToSend, setFileToSend] = React.useState<File | null>(null);
@@ -29,6 +34,13 @@ const ModalImport = ({ isVisible, onClose }: ModalImportProps) => {
     clear();
   };
 
+  useEffect(() => {
+    if (isSuccess) {
+      refetchImports?.();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isSuccess]);
+
   return (
     <div
       className={cn(
@@ -45,6 +57,7 @@ const ModalImport = ({ isVisible, onClose }: ModalImportProps) => {
               <h1 className="text-2xl font-bold">
                 Planilha importada com sucesso
               </h1>
+              <span>Em breve sua planilha estará disponível</span>
               <button
                 className="mt-8 bg-indigo-500 cursor-pointer text-slate-200 w-full p-4 rounded-md"
                 onClick={handleClose}
