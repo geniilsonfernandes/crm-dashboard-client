@@ -31,9 +31,12 @@ export const Home = () => {
           <div className=" flex items-center rounded-lg  justify-between">
             <p className="text-slate-200">Importar CRM</p>
             <div className="flex gap-4">
-              <button className="cursor-pointer text-slate-200 border border-slate-800 p-4 rounded-md flex items-center gap-3">
+              <a
+                target="_blank"
+                className="cursor-pointer text-slate-200 border border-slate-800 p-4 rounded-md flex items-center gap-3"
+              >
                 Baixar Template <File strokeWidth={1} />
-              </button>
+              </a>
               <button
                 className="bg-indigo-500 cursor-pointer text-slate-200 border border-slate-800 p-4 rounded-md flex items-center gap-3"
                 onClick={() => setIsVisible(true)}

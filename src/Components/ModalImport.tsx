@@ -11,7 +11,7 @@ const ModalImport = ({
   onClose,
   refetchImports,
 }: ModalImportProps) => {
-  const { execute, isError, isLoading, isSuccess, clear } = useImport();
+  const { execute, isError, isLoading, isSuccess, clear, error } = useImport();
 
   const [fileToSend, setFileToSend] = React.useState<File | null>(null);
 
@@ -82,8 +82,14 @@ const ModalImport = ({
               Formatos aceitos: .xlsx, .xls, .csv
             </div>
             {isError && (
-              <div className="text-red-500">
-                Erro ao enviar, tente novamente
+              <div className="space-y-2">
+                <div className="text-red-500">
+                  Erro ao enviar, tente novamente
+                </div>
+                <div className="text-red-500 text-sm border border-red-500 p-2 rounded-md">
+                  <div className="text-slate-400"> Detalhes:</div>
+                  {error}
+                </div>
               </div>
             )}
             <button

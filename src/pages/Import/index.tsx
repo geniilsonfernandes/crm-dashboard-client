@@ -146,7 +146,7 @@ export const ImportPage = () => {
               />
             ))}
           </div>
-          <div className="grid grid-cols-1 gap-8 md:grid-flow-col-6 sm:grid-cols-12">
+          <div className="grid grid-cols-1 gap-8 md:grid-flow-col-6co sm:grid-cols-12">
             <MRRChart import_id={id} />
 
             <Card
